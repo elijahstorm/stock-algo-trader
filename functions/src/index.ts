@@ -110,7 +110,7 @@ exports.getRichQuick = functions
 		} catch (e) {
 			console.log("but it failed")
 			console.error(e)
-		} finally {
-			return null
 		}
+
+		return null
 	})
