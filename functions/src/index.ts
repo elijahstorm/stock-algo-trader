@@ -48,12 +48,6 @@ async function scrape() {
 	return tweets
 }
 
-exports.helloWorld = functions.https.onRequest(async (request, response) => {
-	// test logic here
-
-	response.send("test")
-})
-
 exports.getRichQuick = functions
 	.runWith({ memory: "4GB" })
 	.pubsub.schedule("0 10 * * 1-5")
@@ -100,17 +94,23 @@ exports.getRichQuick = functions
 		const account = await alpaca.getAccount()
 		console.log(`dry powder: ${account.buying_power}`)
 
-		// place order
-		const order = await alpaca.createOrder({
-			symbol: stocksToBuy[0],
-			// qty: 1,
-			notional: account.buying_power * 0.9, // will buy fractional shares
-			side: "buy",
-			type: "market",
-			time_in_force: "day"
-		})
+		console.log(`we want to buy ticker: ${stocksToBuy[0]}`)
+		try {
+			// place order
+			const order = await alpaca.createOrder({
+				symbol: stocksToBuy[0],
+				// qty: 1,
+				notional: account.buying_power * 0.9, // will buy fractional shares
+				side: "buy",
+				type: "market",
+				time_in_force: "day"
+			})
 
-		console.log(`look mom i bought stonks: ${order.id}`)
-
-		return null
+			console.log(`look mom i bought stonks: ${order.id}`)
+		} catch (e) {
+			console.log("but it failed")
+			console.error(e)
+		} finally {
+			return null
+		}
 	})
