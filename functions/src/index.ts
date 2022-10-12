@@ -102,8 +102,9 @@ exports.getRichQuick = functions
 				// qty: 1,
 				notional: account.buying_power * 0.9, // will buy fractional shares
 				side: "buy",
-				type: "market",
-				time_in_force: "day"
+				type: "trailing_stop",
+				time_in_force: "day",
+				trail_percent: 3
 			})
 
 			console.log(`look mom i bought stonks: ${order.id}`)
